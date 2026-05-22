@@ -1,5 +1,7 @@
 import * as cheerio from "cheerio";
 
+const ALLOWED_PROTOCOLS = new Set(["http:", "https:"]);
+
 export default function parseHTML(html: string, url: URL) {
 	try {
 		const $ = cheerio.load(html);
@@ -9,7 +11,13 @@ export default function parseHTML(html: string, url: URL) {
 			const href = $(element).attr("href");
 			if (!href) return;
 
-			links.push(new URL(href, url));
+			try {
+				const newUrl = new URL(href, url);
+				if (!ALLOWED_PROTOCOLS.has(url.protocol)) return;
+				links.push(newUrl);
+			} catch {
+				return;
+			}
 		});
 		return links;
 	} catch (err) {
