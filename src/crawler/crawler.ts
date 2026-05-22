@@ -22,7 +22,7 @@ export default async function runCrawler(
 		startUrl,
 		logger,
 		userAgent = "my-crawler",
-		concurrency = 1,
+		concurrency = 1000,
 		fetchRobotsFn = fetchRobots,
 		getHTMLFn = getHTMLFromLink,
 	} = opts;
