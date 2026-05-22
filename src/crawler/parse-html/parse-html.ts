@@ -13,7 +13,7 @@ export default function parseHTML(html: string, url: URL) {
 
 			try {
 				const newUrl = new URL(href, url);
-				if (!ALLOWED_PROTOCOLS.has(url.protocol)) return;
+				if (!ALLOWED_PROTOCOLS.has(newUrl.protocol)) return;
 				links.push(newUrl);
 			} catch {
 				return;
