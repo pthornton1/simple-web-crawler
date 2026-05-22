@@ -9,8 +9,7 @@ export default function queueLinks(
 	if (links.length === 0) {
 		return [];
 	}
-	const linksToQueue: URL[] = [];
-	links.filter((link) => {
+	const linksToQueue = links.filter((link) => {
 		if (visitedUrls.has(link.toString())) {
 			return false;
 		}
