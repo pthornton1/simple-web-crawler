@@ -35,6 +35,7 @@ export default async function runCrawler(
 	}
 
 	const visitedUrls = new Map<string, string[]>();
+	const queuedUrls = new Set<string>();
 	const urlQueue = new PQueue({
 		concurrency,
 		interval: robots?.getCrawlDelay(userAgent) ?? 1000,
@@ -42,22 +43,22 @@ export default async function runCrawler(
 
 	async function crawl(url: string) {
 		try {
+			console.log(`crawling page ${url}`);
 			const html = await getHTMLFn(url, logger);
 			const links = parseHTML(html, url);
 			const normalisedLinks = normaliseLinks(links);
 			visitedUrls.set(url, normalisedLinks);
-			const linksToQueue = queueLinks(
-				normalisedLinks,
-				url,
-				robots,
-				visitedUrls,
-			);
+			const linksToQueue = queueLinks(normalisedLinks, url, robots, queuedUrls);
+			for (const link of linksToQueue) {
+				queuedUrls.add(link);
+			}
 			urlQueue.addAll(linksToQueue.map((link) => () => crawl(link)));
 		} catch (err) {
 			logger.error("Failed to crawl URL", { url, err });
 		}
 	}
 
+	queuedUrls.add(startUrl.toString());
 	urlQueue.add(() => crawl(startUrl.toString()));
 	await urlQueue.onIdle();
 	return visitedUrls;

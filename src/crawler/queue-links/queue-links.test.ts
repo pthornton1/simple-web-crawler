@@ -8,7 +8,7 @@ describe("queueLinks", () => {
 			[],
 			new URL("http://example.com"),
 			null,
-			new Map(),
+			new Set(),
 		);
 		expect(result).toEqual([]);
 	});
@@ -18,19 +18,18 @@ describe("queueLinks", () => {
 			links,
 			new URL("http://example.com"),
 			null,
-			new Map(),
+			new Set(),
 		);
 		expect(result).toEqual(links);
 	});
 	it("should filter out visited URLs", () => {
-		const visitedUrls = new Map();
-		visitedUrls.set("http://example.com/page1", []);
+		const queuedUrls = new Set(["http://example.com/page1"]);
 		const links = ["http://example.com/page1", "http://example.com/page2"];
 		const result = queueLinks(
 			links,
 			new URL("http://example.com"),
 			null,
-			visitedUrls,
+			queuedUrls,
 		);
 		expect(result).toEqual(["http://example.com/page2"]);
 	});
@@ -40,7 +39,7 @@ describe("queueLinks", () => {
 			links,
 			new URL("http://example.com"),
 			null,
-			new Map(),
+			new Set(),
 		);
 		expect(result).toEqual(["http://example.com/page1"]);
 	});
@@ -58,7 +57,7 @@ describe("queueLinks", () => {
 			links,
 			new URL("http://example.com"),
 			robots,
-			new Map(),
+			new Set(),
 		);
 		expect(result).toEqual(["http://example.com/page2"]);
 	});

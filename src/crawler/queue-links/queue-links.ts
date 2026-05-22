@@ -4,13 +4,13 @@ export default function queueLinks(
 	links: string[],
 	currentUrl: string | URL,
 	robots: Robot | null,
-	visitedUrls: Map<string, string[]>,
+	queuedUrls: Set<string>,
 ) {
 	if (links.length === 0) {
 		return [];
 	}
 	const linksToQueue = links.filter((link) => {
-		if (visitedUrls.has(link)) {
+		if (queuedUrls.has(link)) {
 			return false;
 		}
 		if (new URL(link).origin !== new URL(currentUrl).origin) {
