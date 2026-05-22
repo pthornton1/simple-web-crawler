@@ -5,6 +5,7 @@ import getHTMLFromLink from "./get-html-from-link.ts";
 describe("getHTMLFromLink", () => {
 	afterEach(() => {
 		vi.resetAllMocks();
+		vi.unstubAllGlobals();
 	});
 
 	it("should fetch HTML content from a URL when content is html", async () => {

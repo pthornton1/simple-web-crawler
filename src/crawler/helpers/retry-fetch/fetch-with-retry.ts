@@ -27,7 +27,8 @@ export default async function fetchWithRetry(
 				});
 				throw err;
 			}
-			const delay = 2 ** attempt * backoffBase + Math.random() * 100;
+			const delay = backoffBase * 2 ** attempt + Math.random() * 100;
+
 			await new Promise((r) => setTimeout(r, delay));
 		}
 	}

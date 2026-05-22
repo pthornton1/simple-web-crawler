@@ -1,7 +1,7 @@
 import type { Robot } from "robots-parser";
 import robotsParser from "robots-parser";
 import type { Logger } from "../helpers/logger/logger.ts";
-import fetchWithRetry from "../helpers/retry-fetch/fetch-wth-retry.ts";
+import fetchWithRetry from "../helpers/retry-fetch/fetch-with-retry.ts";
 
 export default async function fetchRobots(subDomain: URL, logger: Logger) {
 	let robots: Robot | null = null;

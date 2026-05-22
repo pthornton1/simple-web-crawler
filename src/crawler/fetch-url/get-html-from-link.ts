@@ -1,5 +1,5 @@
 import type { Logger } from "../helpers/logger/logger.ts";
-import fetchWithRetry from "../helpers/retry-fetch/fetch-wth-retry.ts";
+import fetchWithRetry from "../helpers/retry-fetch/fetch-with-retry.ts";
 
 export default async function getHTMLFromLink(url: URL, logger: Logger) {
 	try {
