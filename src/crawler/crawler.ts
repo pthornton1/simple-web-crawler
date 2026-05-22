@@ -40,15 +40,12 @@ export default async function runCrawler(
 		interval: robots?.getCrawlDelay(userAgent) ?? 1000,
 	});
 
-	async function crawl(url: URL) {
+	async function crawl(url: string) {
 		try {
 			const html = await getHTMLFn(url, logger);
 			const links = parseHTML(html, url);
 			const normalisedLinks = normaliseLinks(links);
-			visitedUrls.set(
-				url.toString(),
-				normalisedLinks.map((link) => link.toString()),
-			);
+			visitedUrls.set(url, normalisedLinks);
 			const linksToQueue = queueLinks(
 				normalisedLinks,
 				url,
@@ -61,7 +58,7 @@ export default async function runCrawler(
 		}
 	}
 
-	urlQueue.add(() => crawl(startUrl));
+	urlQueue.add(() => crawl(startUrl.toString()));
 	await urlQueue.onIdle();
 	return visitedUrls;
 }

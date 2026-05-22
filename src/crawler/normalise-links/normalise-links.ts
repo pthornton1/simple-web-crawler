@@ -3,16 +3,15 @@ export default function normaliseLinks(links: URL[]) {
 
 	for (const link of links) {
 		const normalisedUrl = new URL(link.toString());
-		normalisedUrl.hash = ""; // Remove fragment
-		normalisedUrl.search = ""; // Remove query parameters
+		normalisedUrl.hash = "";
+		normalisedUrl.search = "";
 
-		// Ensure trailing slash consistency
-		if (!normalisedUrl.pathname.endsWith("/")) {
-			normalisedUrl.pathname += "/";
+		if (normalisedUrl.pathname.endsWith("/")) {
+			normalisedUrl.pathname = normalisedUrl.pathname.slice(0, -1);
 		}
 
 		normalisedSet.add(normalisedUrl.toString());
 	}
 
-	return Array.from(normalisedSet).map((urlStr) => new URL(urlStr));
+	return Array.from(normalisedSet);
 }

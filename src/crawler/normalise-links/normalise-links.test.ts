@@ -10,7 +10,7 @@ describe("normaliseLinks", () => {
 	it("should convert the domain to lowercase but leave the path in the original case", () => {
 		const links = [new URL("HTTP://EXAMPLE.COM/PAGE")];
 		const normalised = normaliseLinks(links);
-		expect(normalised).toEqual([new URL("http://example.com/PAGE/")]);
+		expect(normalised).toEqual(["http://example.com/PAGE"]);
 	});
 	it("should normalise links by removing fragments and query parameters", () => {
 		const links = [
@@ -19,16 +19,16 @@ describe("normaliseLinks", () => {
 			new URL("http://example.com/page?query=123"),
 		];
 		const normalised = normaliseLinks(links);
-		expect(normalised).toEqual([new URL("http://example.com/page/")]);
+		expect(normalised).toEqual(["http://example.com/page"]);
 	});
 
-	it("should ensure all urls have trailing slashes, dropping duplicates", () => {
+	it("should remove trailing slashes, dropping duplicates", () => {
 		const links = [
 			new URL("http://example.com/page"),
 			new URL("http://example.com/page/"),
 		];
 		const normalised = normaliseLinks(links);
-		expect(normalised).toEqual([new URL("http://example.com/page/")]);
+		expect(normalised).toEqual(["http://example.com/page"]);
 	});
 
 	it("should remove duplicates", () => {
@@ -39,7 +39,7 @@ describe("normaliseLinks", () => {
 			new URL("http://example.com/page#section"),
 		];
 		const normalised = normaliseLinks(links);
-		expect(normalised).toEqual([new URL("http://example.com/page/")]);
+		expect(normalised).toEqual(["http://example.com/page"]);
 	});
 
 	it("should handle a mix of normal and abnormal URLs", () => {
@@ -51,8 +51,8 @@ describe("normaliseLinks", () => {
 		];
 		const normalised = normaliseLinks(links);
 		expect(normalised).toEqual([
-			new URL("http://example.com/page/"),
-			new URL("http://example.com/other-page/"),
+			"http://example.com/page",
+			"http://example.com/other-page",
 		]);
 	});
 });

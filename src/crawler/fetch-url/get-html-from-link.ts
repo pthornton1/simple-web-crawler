@@ -1,7 +1,10 @@
 import type { Logger } from "../helpers/logger/logger.ts";
 import fetchWithRetry from "../helpers/retry-fetch/fetch-with-retry.ts";
 
-export default async function getHTMLFromLink(url: URL, logger: Logger) {
+export default async function getHTMLFromLink(
+	url: URL | string,
+	logger: Logger,
+) {
 	try {
 		const res = await fetchWithRetry(url, logger);
 		const contentType = res.headers.get("content-type") || "";

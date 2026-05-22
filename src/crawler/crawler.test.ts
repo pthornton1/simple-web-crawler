@@ -47,7 +47,7 @@ describe("runCrawler", () => {
 			logger: testLogger,
 		});
 		expect(visited.has(`${baseUrl}`)).toBe(true);
-		expect(visited.has(`${baseUrl}about/`)).toBe(true);
-		expect(visited.has(`${baseUrl}products/`)).toBe(true);
+		expect(visited.has(`${baseUrl}about`)).toBe(true);
+		expect(visited.has(`${baseUrl}products`)).toBe(true);
 	});
 });

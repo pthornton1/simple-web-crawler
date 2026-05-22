@@ -13,10 +13,7 @@ describe("queueLinks", () => {
 		expect(result).toEqual([]);
 	});
 	it("should return all links if they are all valid", () => {
-		const links = [
-			new URL("http://example.com/page1"),
-			new URL("http://example.com/page2"),
-		];
+		const links = ["http://example.com/page1", "http://example.com/page2"];
 		const result = queueLinks(
 			links,
 			new URL("http://example.com"),
@@ -28,30 +25,24 @@ describe("queueLinks", () => {
 	it("should filter out visited URLs", () => {
 		const visitedUrls = new Map();
 		visitedUrls.set("http://example.com/page1", []);
-		const links = [
-			new URL("http://example.com/page1"),
-			new URL("http://example.com/page2"),
-		];
+		const links = ["http://example.com/page1", "http://example.com/page2"];
 		const result = queueLinks(
 			links,
 			new URL("http://example.com"),
 			null,
 			visitedUrls,
 		);
-		expect(result).toEqual([new URL("http://example.com/page2")]);
+		expect(result).toEqual(["http://example.com/page2"]);
 	});
 	it("should filter out URLs with different origins", () => {
-		const links = [
-			new URL("http://example.com/page1"),
-			new URL("http://other.com/page2"),
-		];
+		const links = ["http://example.com/page1", "http://other.com/page2"];
 		const result = queueLinks(
 			links,
 			new URL("http://example.com"),
 			null,
 			new Map(),
 		);
-		expect(result).toEqual([new URL("http://example.com/page1")]);
+		expect(result).toEqual(["http://example.com/page1"]);
 	});
 	it("should filter out disallowed URLs according to robots.txt", () => {
 		const robots: Robot = {
@@ -62,16 +53,13 @@ describe("queueLinks", () => {
 			getSitemaps: () => [],
 			getPreferredHost: () => null,
 		};
-		const links = [
-			new URL("http://example.com/page1"),
-			new URL("http://example.com/page2"),
-		];
+		const links = ["http://example.com/page1", "http://example.com/page2"];
 		const result = queueLinks(
 			links,
 			new URL("http://example.com"),
 			robots,
 			new Map(),
 		);
-		expect(result).toEqual([new URL("http://example.com/page2")]);
+		expect(result).toEqual(["http://example.com/page2"]);
 	});
 });

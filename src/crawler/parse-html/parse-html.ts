@@ -2,7 +2,7 @@ import * as cheerio from "cheerio";
 
 const ALLOWED_PROTOCOLS = new Set(["http:", "https:"]);
 
-export default function parseHTML(html: string, url: URL) {
+export default function parseHTML(html: string, url: URL | string) {
 	try {
 		const $ = cheerio.load(html);
 		const links: URL[] = [];

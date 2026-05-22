@@ -1,8 +1,8 @@
 import type { Robot } from "robots-parser";
 
 export default function queueLinks(
-	links: URL[],
-	currentUrl: URL,
+	links: string[],
+	currentUrl: string | URL,
 	robots: Robot | null,
 	visitedUrls: Map<string, string[]>,
 ) {
@@ -10,10 +10,10 @@ export default function queueLinks(
 		return [];
 	}
 	const linksToQueue = links.filter((link) => {
-		if (visitedUrls.has(link.toString())) {
+		if (visitedUrls.has(link)) {
 			return false;
 		}
-		if (link.origin !== currentUrl.origin) {
+		if (new URL(link).origin !== new URL(currentUrl).origin) {
 			return false;
 		}
 		if (robots?.isDisallowed(link.toString(), "my-crawler")) {
