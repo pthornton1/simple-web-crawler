@@ -20,7 +20,7 @@ describe("runStartup", () => {
 
 	it("returns the URL provided as a command-line argument", () => {
 		process.argv = ["node", "script.ts", "https://example.com"];
-		expect(runStartup()).toBe("https://example.com");
+		expect(runStartup().href).toBe("https://example.com/");
 	});
 
 	it("exits with code 1 if no URL is provided", () => {

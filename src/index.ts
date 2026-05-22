@@ -12,12 +12,11 @@ import runStartup from "./crawler/startup/startup.ts";
 const subDomain = runStartup();
 const logger: Logger = consoleLogger;
 
-let robots: Robot | null = null;
 try {
 	const robotsUrl = new URL("robots.txt", subDomain);
 	const res = await fetchWithRetry(robotsUrl, logger);
 	const robotsTxt = await res.text();
-	robots = robotsParser(robotsUrl, robotsTxt);
+	const robots = robotsParser(robotsUrl.toString(), robotsTxt);
 } catch (err) {
 	// if we fail to fetch robots.txt, we should log the error but continue crawling anyway,
 	// as some sites may not have a robots.txt or it may be temporarily unavailable. However, for this example, we'll exit to keep things simple.
