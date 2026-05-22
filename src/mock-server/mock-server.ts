@@ -1,6 +1,6 @@
-import { createServer } from "node:http";
+import { createServer, type Server } from "node:http";
 
-const pages: Record<string, string> = {
+const defaultPages: Record<string, string> = {
 	"/": `<html><body>
     <a href="/about">About</a>
     <a href="/products">Products</a>
@@ -14,18 +14,29 @@ const pages: Record<string, string> = {
   </body></html>`,
 };
 
-const server = createServer((req, res) => {
-	const page = pages[req.url ?? "/"];
-	if (!page) {
-		res.writeHead(404, { "Content-Type": "text/html" });
-		res.end("<html><body>Not found</body></html>");
-		return;
-	}
-	res.writeHead(200, { "Content-Type": "text/html" });
-	res.end(page);
-});
+export function createMockServer(
+	pages: Record<string, string> = defaultPages,
+): Server {
+	return createServer((req, res) => {
+		const page = pages[req.url ?? "/"];
+		if (!page) {
+			res.writeHead(404, { "Content-Type": "text/html" });
+			res.end("<html><body>Not found</body></html>");
+			return;
+		}
+		res.writeHead(200, { "Content-Type": "text/html" });
+		res.end(page);
+	});
+}
 
-server.listen(0, () => {
+export async function startMockServer(
+	pages?: Record<string, string>,
+): Promise<{ server: Server; baseUrl: URL; close: () => Promise<void> }> {
+	const server = createMockServer(pages);
+	await new Promise<void>((resolve) => server.listen(0, resolve));
 	const { port } = server.address() as { port: number };
-	console.log(`Mock server on http://localhost:${port}`);
-});
+	const baseUrl = new URL(`http://localhost:${port}/`);
+	const close = () =>
+		new Promise<void>((resolve) => server.close(() => resolve()));
+	return { server, baseUrl, close };
+}

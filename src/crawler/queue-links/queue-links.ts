@@ -4,7 +4,7 @@ export default function queueLinks(
 	links: URL[],
 	currentUrl: URL,
 	robots: Robot | null,
-	visitedUrls: Set<string>,
+	visitedUrls: Map<string, string[]>,
 ) {
 	if (links.length === 0) {
 		return [];

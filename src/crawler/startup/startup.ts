@@ -7,5 +7,10 @@ export default function runStartup(logger: Logger): URL {
 		process.exit(1);
 	}
 
-	return new URL(url);
+	try {
+		return new URL(url);
+	} catch (err) {
+		logger.error("Invalid URL provided as an argument.", { url, err });
+		process.exit(1);
+	}
 }

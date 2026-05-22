@@ -28,4 +28,9 @@ describe("runStartup", () => {
 		expect(() => runStartup(testLogger)).toThrow("process.exit called with 1");
 		expect(exitSpy).toHaveBeenCalledWith(1);
 	});
+	it("exits with code 1 if an invalid URL is provided", () => {
+		process.argv = ["node", "script.ts", "not-a-valid-url"];
+		expect(() => runStartup(testLogger)).toThrow("process.exit called with 1");
+		expect(exitSpy).toHaveBeenCalledWith(1);
+	});
 });
