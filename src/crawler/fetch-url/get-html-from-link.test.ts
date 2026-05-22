@@ -34,7 +34,7 @@ describe("getHTMLFromLink", () => {
 			),
 		);
 		const url = new URL("https://example.com");
-		expect(getHTMLFromLink(url, testLogger)).rejects.toThrow(
+		await expect(getHTMLFromLink(url, testLogger)).rejects.toThrow(
 			"Content-Type is not text/html",
 		);
 	});
@@ -44,6 +44,8 @@ describe("getHTMLFromLink", () => {
 			vi.fn().mockRejectedValue(new Error("Network error")),
 		);
 		const url = new URL("https://example.com");
-		expect(getHTMLFromLink(url, testLogger)).rejects.toThrow("Network error");
+		await expect(getHTMLFromLink(url, testLogger)).rejects.toThrow(
+			"Network error",
+		);
 	});
 });
