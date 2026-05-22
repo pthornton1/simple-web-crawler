@@ -1,7 +1,7 @@
 import type { Logger } from "../logger/logger.ts";
 
 export default async function fetchWithRetry(
-	url: string,
+	url: URL,
 	logger: Logger,
 	fetctOptions: RequestInit = {},
 	retries = 2,
