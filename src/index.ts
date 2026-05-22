@@ -17,7 +17,7 @@ if (robots?.isDisallowed(subDomain.toString(), "my-crawler")) {
 	process.exit(0);
 }
 
-const vistedUrls = new Set<URL>();
+const vistedUrls = new Set<string>();
 const urlQueue = new PQueue({
 	concurrency: 1,
 	interval: robots?.getCrawlDelay("my-crawler") ?? 1000,
@@ -26,14 +26,14 @@ const urlQueue = new PQueue({
 urlQueue.add(() => crawl(subDomain));
 
 async function crawl(url: URL) {
-	vistedUrls.add(url);
+	vistedUrls.add(url.toString());
 
 	try {
 		const html = await getHTMLFromLink(url, logger);
 		const links = parseHTML(html, url);
 		const normalisedLinks = normaliseLinks(links);
 		console.debug("Found links", { url, links: normalisedLinks });
-		const linksToQueue = queueLinks(normalisedLinks);
+		const linksToQueue = queueLinks(normalisedLinks, url, robots, vistedUrls);
 		urlQueue.addAll(linksToQueue.map((link: URL) => () => crawl(link)));
 	} catch (err) {
 		logger.error("Failed to crawl URL", { url, err });
