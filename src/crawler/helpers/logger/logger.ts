@@ -11,3 +11,10 @@ export const consoleLogger: Logger = {
 	warn: (msg, meta) => console.warn(msg, meta ?? ""),
 	error: (msg, meta) => console.error(msg, meta ?? ""),
 };
+
+export const testLogger: Logger = {
+	debug: (_msg, _meta) => () => {},
+	info: (_msg, _meta) => () => {},
+	warn: (_msg, _meta) => () => {},
+	error: (_msg, _meta) => () => {},
+};

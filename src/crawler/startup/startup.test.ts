@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { testLogger } from "../helpers/logger/logger.ts";
 import runStartup from "./startup.ts";
 
 describe("runStartup", () => {
@@ -20,11 +21,11 @@ describe("runStartup", () => {
 
 	it("returns the URL provided as a command-line argument", () => {
 		process.argv = ["node", "script.ts", "https://example.com"];
-		expect(runStartup().href).toBe("https://example.com/");
+		expect(runStartup(testLogger).href).toBe("https://example.com/");
 	});
 
 	it("exits with code 1 if no URL is provided", () => {
-		expect(() => runStartup()).toThrow("process.exit called with 1");
+		expect(() => runStartup(testLogger)).toThrow("process.exit called with 1");
 		expect(exitSpy).toHaveBeenCalledWith(1);
 	});
 });

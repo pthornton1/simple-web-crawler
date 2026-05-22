@@ -1,9 +1,9 @@
-export default function runStartup() {
+import type { Logger } from "../helpers/logger/logger.ts";
+
+export default function runStartup(logger: Logger): URL {
 	const url = process.argv[2];
 	if (!url) {
-		console.error(
-			"Please provide a valid URL to crawl as a command-line argument.",
-		);
+		logger.error("No url provided as an argument.");
 		process.exit(1);
 	}
 

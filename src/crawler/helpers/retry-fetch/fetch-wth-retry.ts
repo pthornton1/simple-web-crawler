@@ -9,7 +9,6 @@ export default async function fetchWithRetry(
 ) {
 	for (let attempt = 0; attempt <= retries; attempt++) {
 		try {
-			logger.debug("fetch attempt", { url, attempt });
 			const res = await fetch(url, {
 				...fetctOptions,
 				signal: AbortSignal.timeout(5000),
@@ -29,12 +28,6 @@ export default async function fetchWithRetry(
 				throw err;
 			}
 			const delay = 2 ** attempt * backoffBase + Math.random() * 100;
-			logger.warn("retrying", {
-				url,
-				attempt,
-				delay,
-				err: err instanceof Error ? err.message : String(err),
-			});
 			await new Promise((r) => setTimeout(r, delay));
 		}
 	}
