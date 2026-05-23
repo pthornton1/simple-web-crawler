@@ -48,6 +48,8 @@ Lint and format:
 npm run biome
 ```
 
+Husky is used for pre-commit checks and runs the linting, typechecking and tests before commits.
+
 ## Design decisions
 
 Detailed ADRs for the larger decisions can be found in the [`documentation/`](./documentation) folder.
