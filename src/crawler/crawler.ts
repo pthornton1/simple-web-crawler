@@ -11,6 +11,7 @@ export interface CrawlOptions {
 	logger: Logger;
 	userAgent?: string;
 	concurrency?: number;
+	verbose?: boolean;
 }
 
 export default async function runCrawler(
@@ -21,6 +22,7 @@ export default async function runCrawler(
 		logger,
 		userAgent = "phil-crawler/0.1 (+https://github.com/pthornton1/simple-web-crawler)",
 		concurrency = 1000,
+		verbose = false,
 	} = opts;
 
 	const robots = await fetchRobots(startUrl, logger);
@@ -35,11 +37,14 @@ export default async function runCrawler(
 	const urlQueue = new PQueue({
 		concurrency,
 		interval: robots?.getCrawlDelay(userAgent) ?? 1000,
+		intervalCap: robots?.getCrawlDelay(userAgent) ? 1 : Infinity,
 	});
 
 	async function crawl(url: string) {
+		if (verbose) {
+			logger.info(`crawling page ${url}`);
+		}
 		try {
-			console.log(`crawling page ${url}`);
 			const html = await fetchHTML(url, logger, userAgent);
 			const links = parseHTML(html, url);
 			const normalisedLinks = normaliseLinks(links);
