@@ -41,3 +41,4 @@ Thumbs.db
 .temp/
 *.tgz
 output/*
+!output/.gitkeep
