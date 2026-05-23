@@ -2,7 +2,9 @@
 
 ## Description
 
-A web crawler implemented in TypeScript using [cheerio](https://cheerio.js.org/) and [p-queue](https://github.com/sindresorhus/p-queue). It crawls a given URL, extracting all links and following them in roughly breadth-first order, staying within the same domain.
+A web crawler implemented in TypeScript using [cheerio](https://cheerio.js.org/) and [p-queue](https://github.com/sindresorhus/p-queue). It crawls a given URL, extracting all links and following them in roughly breadth-first order, staying within the same domain. The high level architecture can be seen in this diagram:
+
+<img width="1253" height="834" alt="Screenshot 2026-05-23 at 16 47 21" src="https://github.com/user-attachments/assets/ff3bcc65-e7b9-4568-a1ef-829fff9b87b0" />
 
 ## Setup
 
