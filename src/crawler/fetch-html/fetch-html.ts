@@ -19,6 +19,6 @@ export default async function fetchHTML(
 		const html = await res.text();
 		return html;
 	} catch (err) {
-		throw new Error(`Failed to fetch HTML from ${url}: ${err}`);
+		throw new Error(`Failed to fetch HTML from ${url}: ${err}`, { cause: err });
 	}
 }

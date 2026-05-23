@@ -63,7 +63,7 @@ export default async function runCrawler(
 			}
 			urlQueue.addAll(linksToQueue.map((link) => () => crawl(link)));
 		} catch (err) {
-			logger.error("Failed to crawl URL", { url, err });
+			logger.error("Failed to crawl URL", { url, cause: err });
 		}
 	}
 	const normalisedStartUrl = normaliseLinks([startUrl]);

@@ -21,6 +21,6 @@ export default function parseHTML(html: string, url: URL | string) {
 		});
 		return links;
 	} catch (err) {
-		throw new Error(`Failed to parse HTML from ${url}: ${err}`);
+		throw new Error(`Failed to parse HTML from ${url}: ${err}`, { cause: err });
 	}
 }

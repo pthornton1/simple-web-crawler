@@ -25,6 +25,17 @@ describe("filterLinksToQueue", () => {
 		);
 		expect(result).toEqual(links);
 	});
+	it("should ignore the protocol eg. http vs https when filtering domain", () => {
+		const links = ["http://example.com/page1", "http://example.com/page2"];
+		const result = filterLinksToQueue(
+			links,
+			new URL("https://example.com"),
+			null,
+			new Set(),
+			mockUSerAgent,
+		);
+		expect(result).toEqual(links);
+	});
 	it("should filter out visited URLs", () => {
 		const queuedUrls = new Set(["http://example.com/page1"]);
 		const links = ["http://example.com/page1", "http://example.com/page2"];

@@ -14,7 +14,7 @@ export default function filterLinksToQueue(
 		if (queuedUrls.has(link)) {
 			return false;
 		}
-		if (new URL(link).origin !== new URL(currentUrl).origin) {
+		if (new URL(link).hostname !== new URL(currentUrl).hostname) {
 			return false;
 		}
 		if (robots?.isDisallowed(link.toString(), userAgent)) {
