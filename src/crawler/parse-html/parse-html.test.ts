@@ -22,7 +22,6 @@ describe("parseHTML", () => {
 		const links = parseHTML(mockHtml, mockBaseUrl);
 		expect(links).toEqual([new URL("http://example.com/page1")]);
 	});
-	it;
 
 	describe("links extraction", () => {
 		it("should ignore links without href", () => {
