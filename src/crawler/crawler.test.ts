@@ -69,7 +69,8 @@ describe("runCrawler", () => {
 			verbose: true,
 		});
 		const productCrawls = (testLogger.info as Mock).mock.calls.filter(
-			([string]) => string === `crawling page ${baseUrl}products`,
+			([string]) =>
+				string.includes(`crawled ${baseUrl}products and found links`),
 		);
 		expect(productCrawls.length).toBe(1);
 	});
