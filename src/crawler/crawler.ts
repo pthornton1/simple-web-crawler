@@ -36,7 +36,7 @@ export default async function runCrawler(
 	const queuedUrls = new Set<string>();
 	const urlQueue = new PQueue({
 		concurrency,
-		interval: robots?.getCrawlDelay(userAgent) ?? 1000,
+		interval: robots?.getCrawlDelay(userAgent) ?? 1 * 1000,
 		intervalCap: robots?.getCrawlDelay(userAgent) ? 1 : Infinity,
 	});
 
@@ -66,7 +66,7 @@ export default async function runCrawler(
 	}
 	const normalisedStartUrl = normaliseLinks([startUrl]);
 	queuedUrls.add(normalisedStartUrl[0] as string);
-	urlQueue.add(() => crawl(startUrl.toString()));
+	urlQueue.add(() => crawl(normalisedStartUrl[0] as string));
 	await urlQueue.onIdle();
 	return visitedUrls;
 }

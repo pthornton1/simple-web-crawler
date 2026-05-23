@@ -63,7 +63,9 @@ Detailed ADRs for the larger decisions can be found in the [`documentation/`](./
 
 **HTML-only parsing** — Only `text/html` responses are parsed. Other content types (XML, JSON, etc.) are skipped, as HTML makes up the majority of navigable web content.
 
-**In-memory queue with high concurrency** — p-queue with a concurrency of 1000 is used alongside Maps and Sets. The main bottleneck is network I/O, not CPU, so high concurrency is justified. Node.js is single-threaded, so very high concurrency does introduce more event-loop interruptions, but the trade-off is worthwhile here. For larger-scale crawls, a distributed queue (e.g. BullMQ + Redis) would allow true parallelisation across multiple machines.
+**URL Normalisation** — All trailing slashes are removed for consistency. Hashes that link to sections are ignored as these do not represent distinct pages. Query params are also removed for simplicity in this project as can often contain params that don't impact page content eg. marketing and tracking params. For production usage, certain params should be removed whilst others left eg. ?page=1 should typically be left.
+
+**In-memory queue with high concurrency** — p-queue with a concurrency of 1000 is used alongside Maps and Sets to run against the test link in short space of time. In real usage, the concurrency should be a sensible value eg. 5-10 to avoid abusing the target server. The main bottleneck is network I/O, not CPU, so high concurrency is justified. Node.js is single-threaded, so very high concurrency does introduce more event-loop interruptions, but the trade-off is worthwhile here. For larger-scale crawls, a distributed queue (e.g. BullMQ + Redis) would allow true parallelisation across multiple machines.
 
 **Robots.txt support** — The crawler fetches and respects `robots.txt` before starting, honouring both disallowed routes and crawl rate limits.
 
