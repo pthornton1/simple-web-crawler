@@ -1,18 +1,16 @@
 import PQueue from "p-queue";
+import fetchHTML from "./fetch-html/fetch-html.ts";
 import fetchRobots from "./fetch-robots/fetch-robots.ts";
-import getHTMLFromLink from "./fetch-url/get-html-from-link.ts";
+import filterLinksToQueue from "./filter-links-to-queue/filter-links-to-queue.ts";
 import type { Logger } from "./helpers/logger/logger.ts";
 import normaliseLinks from "./normalise-links/normalise-links.ts";
 import parseHTML from "./parse-html/parse-html.ts";
-import queueLinks from "./queue-links/queue-links.ts";
 
 export interface CrawlOptions {
 	startUrl: URL;
 	logger: Logger;
 	userAgent?: string;
 	concurrency?: number;
-	fetchRobotsFn?: typeof fetchRobots;
-	getHTMLFn?: typeof getHTMLFromLink;
 }
 
 export default async function runCrawler(
@@ -21,13 +19,11 @@ export default async function runCrawler(
 	const {
 		startUrl,
 		logger,
-		userAgent = "my-crawler",
+		userAgent = "phil-crawler/0.1 (+https://github.com/pthornton1/simple-web-crawler)",
 		concurrency = 1000,
-		fetchRobotsFn = fetchRobots,
-		getHTMLFn = getHTMLFromLink,
 	} = opts;
 
-	const robots = await fetchRobotsFn(startUrl, logger);
+	const robots = await fetchRobots(startUrl, logger);
 
 	if (robots?.isDisallowed(startUrl.toString(), userAgent)) {
 		logger.info("Crawling disallowed by robots.txt", { url: startUrl });
@@ -44,11 +40,17 @@ export default async function runCrawler(
 	async function crawl(url: string) {
 		try {
 			console.log(`crawling page ${url}`);
-			const html = await getHTMLFn(url, logger);
+			const html = await fetchHTML(url, logger, userAgent);
 			const links = parseHTML(html, url);
 			const normalisedLinks = normaliseLinks(links);
 			visitedUrls.set(url, normalisedLinks);
-			const linksToQueue = queueLinks(normalisedLinks, url, robots, queuedUrls);
+			const linksToQueue = filterLinksToQueue(
+				normalisedLinks,
+				url,
+				robots,
+				queuedUrls,
+				userAgent,
+			);
 			for (const link of linksToQueue) {
 				queuedUrls.add(link);
 			}
@@ -57,8 +59,8 @@ export default async function runCrawler(
 			logger.error("Failed to crawl URL", { url, err });
 		}
 	}
-
-	queuedUrls.add(startUrl.toString());
+	const normalisedStartUrl = normaliseLinks([startUrl]);
+	queuedUrls.add(normalisedStartUrl[0] as string);
 	urlQueue.add(() => crawl(startUrl.toString()));
 	await urlQueue.onIdle();
 	return visitedUrls;

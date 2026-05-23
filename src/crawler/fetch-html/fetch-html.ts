@@ -1,12 +1,17 @@
 import type { Logger } from "../helpers/logger/logger.ts";
 import fetchWithRetry from "../helpers/retry-fetch/fetch-with-retry.ts";
 
-export default async function getHTMLFromLink(
+export default async function fetchHTML(
 	url: URL | string,
 	logger: Logger,
+	userAgent: string,
 ) {
 	try {
-		const res = await fetchWithRetry(url, logger);
+		const res = await fetchWithRetry(url, logger, {
+			headers: {
+				"User-Agent": userAgent,
+			},
+		});
 		const contentType = res.headers.get("content-type") || "";
 		if (!contentType.includes("text/html")) {
 			throw new Error(`Content-Type is not text/html: ${contentType}`);
