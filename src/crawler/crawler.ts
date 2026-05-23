@@ -21,8 +21,8 @@ export default async function runCrawler(
 		startUrl,
 		logger,
 		userAgent = "phil-crawler/0.1 (+https://github.com/pthornton1/simple-web-crawler)",
-		concurrency = 1000,
-		verbose = false,
+		concurrency = 10,
+		verbose = true,
 	} = opts;
 
 	const robots = await fetchRobots(startUrl, logger);
@@ -36,19 +36,21 @@ export default async function runCrawler(
 	const queuedUrls = new Set<string>();
 	const urlQueue = new PQueue({
 		concurrency,
-		interval: robots?.getCrawlDelay(userAgent) ?? 1 * 1000,
+		interval: (robots?.getCrawlDelay(userAgent) ?? 1) * 1000,
 		intervalCap: robots?.getCrawlDelay(userAgent) ? 1 : Infinity,
 	});
 
 	async function crawl(url: string) {
-		if (verbose) {
-			logger.info(`crawling page ${url}`);
-		}
 		try {
 			const html = await fetchHTML(url, logger, userAgent);
 			const links = parseHTML(html, url);
 			const normalisedLinks = normaliseLinks(links);
 			visitedUrls.set(url, normalisedLinks);
+			if (verbose) {
+				logger.info(
+					`crawled ${url} and found links: \n${normalisedLinks.join("\n")}`,
+				);
+			}
 			const linksToQueue = filterLinksToQueue(
 				normalisedLinks,
 				url,

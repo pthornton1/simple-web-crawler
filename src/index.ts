@@ -4,7 +4,8 @@ import { consoleLogger } from "./crawler/helpers/logger/logger.ts";
 import runStartup from "./crawler/startup/startup.ts";
 
 const startUrl = runStartup(consoleLogger);
-const visited = await runCrawler({ startUrl, logger: consoleLogger });
+const verbose = !process.argv.includes("--quiet");
+const visited = await runCrawler({ startUrl, logger: consoleLogger, verbose });
 
 await writeFile(
 	"output/crawl-result.json",

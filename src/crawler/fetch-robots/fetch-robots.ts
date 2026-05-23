@@ -8,8 +8,10 @@ export default async function fetchRobots(subDomain: URL, logger: Logger) {
 	try {
 		const robotsUrl = new URL("robots.txt", subDomain);
 		const res = await fetchWithRetry(robotsUrl, logger);
-		const robotsTxt = await res.text();
-		robots = robotsParser(robotsUrl.toString(), robotsTxt);
+		if (res.ok) {
+			const robotsTxt = await res.text();
+			robots = robotsParser(robotsUrl.toString(), robotsTxt);
+		}
 	} catch (err) {
 		logger.warn("Failed to fetch robots.txt", {
 			url: `${subDomain}/robots.txt`,
