@@ -2,7 +2,7 @@ import type { Robot } from "robots-parser";
 
 export default function filterLinksToQueue(
 	links: string[],
-	currentUrl: string | URL,
+	subDomain: string,
 	robots: Robot | null,
 	queuedUrls: Set<string>,
 	userAgent: string,
@@ -14,7 +14,7 @@ export default function filterLinksToQueue(
 		if (queuedUrls.has(link)) {
 			return false;
 		}
-		if (new URL(link).hostname !== new URL(currentUrl).hostname) {
+		if (new URL(link).hostname !== subDomain) {
 			return false;
 		}
 		if (robots?.isDisallowed(link.toString(), userAgent)) {

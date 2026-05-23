@@ -3,14 +3,15 @@ import { describe, expect, it } from "vitest";
 import filterLinksToQueue from "./filter-links-to-queue.ts";
 
 describe("filterLinksToQueue", () => {
-	const mockUSerAgent = "mock-crawler";
+	const mockUserAgent = "mock-crawler";
+	const subDomain = "example.com";
 	it("should return an empty array if there are no links", () => {
 		const result = filterLinksToQueue(
 			[],
-			new URL("http://example.com"),
+			subDomain,
 			null,
 			new Set(),
-			mockUSerAgent,
+			mockUserAgent,
 		);
 		expect(result).toEqual([]);
 	});
@@ -18,10 +19,10 @@ describe("filterLinksToQueue", () => {
 		const links = ["http://example.com/page1", "http://example.com/page2"];
 		const result = filterLinksToQueue(
 			links,
-			new URL("http://example.com"),
+			subDomain,
 			null,
 			new Set(),
-			mockUSerAgent,
+			mockUserAgent,
 		);
 		expect(result).toEqual(links);
 	});
@@ -29,10 +30,10 @@ describe("filterLinksToQueue", () => {
 		const links = ["http://example.com/page1", "http://example.com/page2"];
 		const result = filterLinksToQueue(
 			links,
-			new URL("https://example.com"),
+			subDomain,
 			null,
 			new Set(),
-			mockUSerAgent,
+			mockUserAgent,
 		);
 		expect(result).toEqual(links);
 	});
@@ -41,10 +42,10 @@ describe("filterLinksToQueue", () => {
 		const links = ["http://example.com/page1", "http://example.com/page2"];
 		const result = filterLinksToQueue(
 			links,
-			new URL("http://example.com"),
+			subDomain,
 			null,
 			queuedUrls,
-			mockUSerAgent,
+			mockUserAgent,
 		);
 		expect(result).toEqual(["http://example.com/page2"]);
 	});
@@ -52,10 +53,10 @@ describe("filterLinksToQueue", () => {
 		const links = ["http://example.com/page1", "http://other.com/page2"];
 		const result = filterLinksToQueue(
 			links,
-			new URL("http://example.com"),
+			subDomain,
 			null,
 			new Set(),
-			mockUSerAgent,
+			mockUserAgent,
 		);
 		expect(result).toEqual(["http://example.com/page1"]);
 	});
@@ -71,10 +72,10 @@ describe("filterLinksToQueue", () => {
 		const links = ["http://example.com/page1", "http://example.com/page2"];
 		const result = filterLinksToQueue(
 			links,
-			new URL("http://example.com"),
+			subDomain,
 			robots,
 			new Set(),
-			mockUSerAgent,
+			mockUserAgent,
 		);
 		expect(result).toEqual(["http://example.com/page2"]);
 	});

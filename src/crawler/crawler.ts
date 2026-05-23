@@ -39,6 +39,7 @@ export default async function runCrawler(
 		interval: (robots?.getCrawlDelay(userAgent) ?? 1) * 1000,
 		intervalCap: robots?.getCrawlDelay(userAgent) ? 1 : Infinity,
 	});
+	const subDomain = startUrl.hostname;
 
 	async function crawl(url: string) {
 		try {
@@ -53,7 +54,7 @@ export default async function runCrawler(
 			}
 			const linksToQueue = filterLinksToQueue(
 				normalisedLinks,
-				url,
+				subDomain,
 				robots,
 				queuedUrls,
 				userAgent,
