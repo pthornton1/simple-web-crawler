@@ -25,6 +25,22 @@ describe("fetchRobots", () => {
 		expect(robots?.isDisallowed(testUrl.toString(), "my-crawler")).toBe(false);
 	});
 
+	it("should return null when robots.txt returns 404", async () => {
+		vi.stubGlobal(
+			"fetch",
+			vi
+				.fn()
+				.mockResolvedValue(
+					new Response("<html>Not Found</html>", { status: 404 }),
+				),
+		);
+		const robots = await fetchRobots(
+			new URL("https://example.com"),
+			testLogger,
+		);
+		expect(robots).toBeNull();
+	});
+
 	it("should return null when robots.txt not fetched and warn", async () => {
 		const subDomain = new URL("https://invalid-domain");
 		const robots = await fetchRobots(subDomain, testLogger);
