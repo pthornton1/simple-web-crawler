@@ -12,6 +12,9 @@ export default async function fetchHTML(
 				"User-Agent": userAgent,
 			},
 		});
+		if (!res.ok) {
+			throw new Error(`Response is not okay`);
+		}
 		const contentType = res.headers.get("content-type") || "";
 		if (!contentType.includes("text/html")) {
 			throw new Error(`Content-Type is not text/html: ${contentType}`);

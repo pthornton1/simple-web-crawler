@@ -62,6 +62,21 @@ describe("fetchHTML", () => {
 			}),
 		);
 	});
+	it("should throw an error when response is not ok", async () => {
+		vi.stubGlobal(
+			"fetch",
+			vi.fn().mockResolvedValue(
+				new Response("<html><body>Not found</body></html>", {
+					status: 404,
+					headers: { "content-type": "text/html" },
+				}),
+			),
+		);
+		const url = new URL("https://example.com");
+		await expect(fetchHTML(url, testLogger, mockUserAgent)).rejects.toThrow(
+			"Response is not okay",
+		);
+	});
 	it("should throw an error when content type is not text/html", async () => {
 		vi.stubGlobal(
 			"fetch",
