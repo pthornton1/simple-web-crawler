@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, type Mock } from "vitest";
 import { startMockServer } from "../mock-server/mock-server.ts";
 import runCrawler from "./crawler.ts";
-import { testLogger } from "./helpers/logger/logger.ts";
+import { testLogger } from "./helpers/logger/test-logger.ts";
 
 describe("runCrawler", () => {
 	let baseUrl: URL;

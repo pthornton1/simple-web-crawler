@@ -1,5 +1,3 @@
-import { vi } from "vitest";
-
 export interface Logger {
 	debug(msg: string, meta?: Record<string, unknown>): void;
 	info(msg: string, meta?: Record<string, unknown>): void;
@@ -12,11 +10,4 @@ export const consoleLogger: Logger = {
 	info: (msg, meta) => console.info(msg, meta ?? ""),
 	warn: (msg, meta) => console.warn(msg, meta ?? ""),
 	error: (msg, meta) => console.error(msg, meta ?? ""),
-};
-
-export const testLogger: Logger = {
-	info: vi.fn(),
-	warn: vi.fn(),
-	error: vi.fn(),
-	debug: vi.fn(),
 };

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { testLogger } from "../logger/logger.ts";
+import { testLogger } from "../logger/test-logger.ts";
 import fetchWithRetry from "./fetch-with-retry.ts";
 
 describe("fetchWithRetry", () => {

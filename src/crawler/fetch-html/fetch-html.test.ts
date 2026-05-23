@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { testLogger } from "../helpers/logger/logger.ts";
+import { testLogger } from "../helpers/logger/test-logger.ts";
 import fetchHTML from "./fetch-html.ts";
 
 describe("fetchHTML", () => {

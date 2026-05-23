@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { testLogger } from "../helpers/logger/logger.ts";
+import { testLogger } from "../helpers/logger/test-logger.ts";
 import runStartup from "./startup.ts";
 
 describe("runStartup", () => {
