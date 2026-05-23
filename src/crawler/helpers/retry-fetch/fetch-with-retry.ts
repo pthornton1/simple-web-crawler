@@ -3,14 +3,14 @@ import type { Logger } from "../logger/logger.ts";
 export default async function fetchWithRetry(
 	url: URL | string,
 	logger: Logger,
-	fetctOptions: RequestInit = {},
+	fetchOptions: RequestInit = {},
 	retries = 2,
 	backoffBase = 100,
 ) {
 	for (let attempt = 0; attempt <= retries; attempt++) {
 		try {
 			const res = await fetch(url, {
-				...fetctOptions,
+				...fetchOptions,
 				signal: AbortSignal.timeout(5000),
 			});
 			if (res.ok) return res;
